@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-headless-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: my-headless-service.example.com
+      http:
+        paths:
+          - path: /(.*)/api/v1/data
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: my-headless-service
+                port:
+                  name: my-port

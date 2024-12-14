@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    worker_processes auto;
+    error_log /var/log/nginx/error.log;
+    pid /run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+
+        server {
+            listen 80;
+            server_name localhost;
+
+            location / {
+                default_type text/html;
+                return 200 '<h1>Welcome to $HOSTNAME</h1>';
+            }
+
+            location /status {
+                access_log off;
+                default_type application/json;
+                return 200 '{"status": "OK", "message": "Everything is fine"}';
+            }
+
+            location /task {
+                if ($request_method != POST) {
+                    return 405;
+                }
+                access_log off;
+                content_by_lua_block {
+                    ngx.req.read_body()
+                    local body = ngx.req.get_body_data()
+                    if body then
+                        ngx.status = 200
+                        ngx.header["Content-Type"] = "application/json"
+                        ngx.say(body)
+                    else
+                        ngx.status = 400
+                        ngx.say('{"error": "No body"}')
+                    end
+                }
+            }
+
+            # Other configurations...
+        }
+    }

@@ -1,0 +1,15 @@
+resources:
+- manifests.yaml
+- service.yaml
+
+configurations:
+- kustomizeconfig.yaml
+patches:
+- path: mutating_webhook_patch.yaml
+  target:
+    kind: MutatingWebhookConfiguration
+    name: mutating-webhook-configuration
+- path: validating_webhook_patch.yaml
+  target:
+    kind: ValidatingWebhookConfiguration
+    name: validating-webhook-configuration

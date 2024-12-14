@@ -1,0 +1,12 @@
+apiVersion: robokube.meliazeng.github.io/v1
+kind: Entity
+metadata:
+  name: robot-arm-1
+  namespace: default
+spec:
+  organization: Manufacturing
+  privileged: false
+  serialNumber: ARM-SN-12345
+  model: robot-arm-model
+  syncPeriod: 30 
+  usage: Assembly Line 1

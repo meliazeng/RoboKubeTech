@@ -1,0 +1,153 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.1
+  name: models.robokube.meliazeng.github.io
+spec:
+  group: robokube.meliazeng.github.io
+  names:
+    kind: Model
+    listKind: ModelList
+    plural: models
+    singular: model
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    - jsonPath: .status.currentReplicas
+      name: Replicas
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Model is the Schema for the models API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ModelSpec defines the desired state of Model
+            properties:
+              ctrlEndpoint:
+                description: self defined endpoint for control pannel
+                type: string
+              description:
+                description: Description provides a human-readable description of
+                  the Model.
+                type: string
+              dockerImage:
+                description: DockerImage is a string field representing the container
+                  image to use for the Model.
+                type: string
+              enableSecondary:
+                description: Wheather to have active/standby mode
+                type: boolean
+              ingressUrl:
+                description: IngressURl
+                type: string
+              serialNumber:
+                description: SerialNumber is the unique serial number of the entity's
+                  hardware.
+                type: string
+              statefulSetName:
+                description: Statefulset provided by customer, the operator will setup
+                  ownership. It will take priority
+                type: string
+              statusEndpoint:
+                description: Self defined endpoint for operator to query status from
+                type: string
+              syncPeriod:
+                description: |-
+                  SyncPeriod specifies how often the entity should sync its status
+                  with the associated Pod, expressed in seconds.
+                  A value of 0 or less indicates no periodic syncing.
+                format: int32
+                type: integer
+              targetReplicas:
+                description: Latest batch replicas of entity within the model
+                format: int32
+                type: integer
+              taskEndpoint:
+                description: Self defined endpoint for operator sending task to
+                type: string
+            type: object
+          status:
+            description: ModelStatus defines the observed state of Model
+            properties:
+              conditions:
+                description: Conditions represents the latest available observations
+                  of an Entity's current state.
+                items:
+                  description: Condition describes the state of a resource at a certain
+                    point.
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: (Optional) Human-readable message indicating details
+                        about last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        (Optional) Unique, this should be a short, machine understandable string that gives the reason
+                        for the condition's last transition. For example, "ImageFound" could be used as the reason for
+                        a resource's Status being "Running".
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition. such as Progressing/Ready/Reconciling
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              currentReplicas:
+                type: string
+              deactiveEntities:
+                description: ActiveEntities represents the number of entities associated
+                  with this model that are currently active.
+                items:
+                  type: string
+                type: array
+              disconnectedEntities:
+                description: DisconnectedEntities represents the number of entities
+                  associated with this model that are currently disconnected.
+                items:
+                  type: string
+                type: array
+              observedGeneration:
+                format: int64
+                type: integer
+              phase:
+                description: Phase show the current object status
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pod-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "ingress-nginx/ca-crt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" 
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X_FORWARDED_CLIENT_CERT $ssl_client_escaped_cert;
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - my-headless-service.example.com
+    secretName: my-tls-secret 
+  rules:
+    - host: my-headless-service.example.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: pod-service
+                port:
+                  name: http
+                  port: 80

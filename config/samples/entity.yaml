@@ -1,0 +1,16 @@
+apiVersion: robokube.meliazeng.github.io/v1
+kind: Entity
+metadata:
+  labels:
+    app.kubernetes.io/name: robokube
+    app.kubernetes.io/managed-by: kustomize
+  name: entity-sample2
+spec:
+  identity: "12343"
+  organization: "test"
+  privileged: true
+  serialNumber: "12312321323123121312"
+  model: "model-sample"
+  syncPeriod: 200
+  usage: "testing purpose"
+  decommissioned: false

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: agent
+spec:
+  serviceName: "agent-service"
+  replicas: 0
+  selector:
+    matchLabels:
+      app: agent
+  template:
+    metadata:
+      labels:
+        app: agent
+    spec:
+      containers:
+      - name: agent
+        image: agent:latest 
+        ports:
+        - containerPort: 80
+        env:
+        - name: ENTITY_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+        - name: PORT
+          value: "80"
+        volumeMounts:
+        - name: agent-data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: agent-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

@@ -1,0 +1,7 @@
+## Append samples of your project ##
+resources:
+- model.yaml
+- group.yaml
+- task.yaml
+- entity.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

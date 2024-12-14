@@ -1,0 +1,133 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.1
+  name: groups.robokube.meliazeng.github.io
+spec:
+  group: robokube.meliazeng.github.io
+  names:
+    kind: Group
+    listKind: GroupList
+    plural: groups
+    singular: group
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Group is the Schema for the groups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GroupSpec defines the desired state of Group
+            properties:
+              contact:
+                description: Contact provides contact information for the Group.
+                type: string
+              description:
+                description: Description provides a human-readable description of
+                  the Group.
+                type: string
+              lastTargets:
+                description: Last applied targets
+                items:
+                  description: TargetRef specifies the target of a task.
+                  properties:
+                    action:
+                      description: Action
+                      type: string
+                    name:
+                      description: Name is the name of the target.
+                      type: string
+                    type:
+                      description: Type is the type of the target.
+                      type: string
+                  required:
+                  - name
+                  - type
+                  type: object
+                type: array
+              owner:
+                description: Owner specifies the owner or maintainer of the Group.
+                type: string
+              type:
+                description: Type is the category of the group. Management group will
+                  allow smart pod to be able to manage the entity within the group
+                type: string
+            required:
+            - type
+            type: object
+          status:
+            description: GroupStatus defines the observed state of Group
+            properties:
+              conditions:
+                description: Conditions represents the latest available observations
+                  of an Entity's current state.
+                items:
+                  description: Condition describes the state of a resource at a certain
+                    point.
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: (Optional) Human-readable message indicating details
+                        about last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        (Optional) Unique, this should be a short, machine understandable string that gives the reason
+                        for the condition's last transition. For example, "ImageFound" could be used as the reason for
+                        a resource's Status being "Running".
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition. such as Progressing/Ready/Reconciling
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                format: int64
+                type: integer
+              phase:
+                description: Phase show the current object status
+                type: string
+              totalEntities:
+                description: TotalEntities contain the number of entities that belong
+                  to this group.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

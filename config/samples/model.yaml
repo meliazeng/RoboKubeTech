@@ -1,0 +1,21 @@
+apiVersion: robokube.meliazeng.github.io/v1
+kind: Model
+metadata:
+  labels:
+    app.kubernetes.io/name: robokube
+    app.kubernetes.io/managed-by: kustomize
+  name: model-sample
+  namespace: test
+spec:
+  description: "testing model"
+  ctrlEndpoint: "/controlpanel"
+  taskEndpoint: "/task"
+  statusEndpoint: "/status"
+  statefulSetName: "nginx"
+  ingressUrl: "test.com"
+  # dockerImage: "nginx:latest"
+  serialNumber: "123-123-111"
+  syncPeriod: 60
+  targetReplicas: 0
+
+  

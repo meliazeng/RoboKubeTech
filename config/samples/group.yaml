@@ -1,0 +1,16 @@
+apiVersion: robokube.meliazeng.github.io/v1
+kind: Group
+metadata:
+  labels:
+    app.kubernetes.io/name: robokube
+    app.kubernetes.io/managed-by: kustomize
+  name: group-sample
+  namespace: test
+spec:
+  description: "test grup"
+  owner: "James"
+  lastTargets:
+    - name: "model-sample"
+      type: "Model"
+      action: "Add"
+  type: "Security"

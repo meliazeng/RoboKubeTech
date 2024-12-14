@@ -1,0 +1,17 @@
+apiVersion: robokube.meliazeng.github.io/v1
+kind: Task
+metadata:
+  labels:
+    app.kubernetes.io/name: robokube
+    app.kubernetes.io/managed-by: kustomize
+  name: task-sample1
+spec:
+  description: "This is a sample task for the RoboKube project"
+  #schedule: "*/2 * * * *"  # Run every 2 minutes
+  #oneTimeExecute: "2023-06-15T10:00:00Z"
+  payload: |
+    {"sender":"task-sender","message":"This is a task message","sentTime":"2024-07-25T12:00:00Z"}
+  targets:
+    - name: "testmodel-0"
+      type: "Entity"
+  dryRun: false

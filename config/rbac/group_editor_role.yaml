@@ -1,0 +1,27 @@
+# permissions for end users to edit groups.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: robokube
+    app.kubernetes.io/managed-by: kustomize
+  name: group-editor-role
+rules:
+- apiGroups:
+  - robokube.meliazeng.github.io
+  resources:
+  - groups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - robokube.meliazeng.github.io
+  resources:
+  - groups/status
+  verbs:
+  - get

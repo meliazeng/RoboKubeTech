@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: task-creator
+subjects:
+- kind: ServiceAccount
+  name: test-sa
+  namespace: test
+roleRef:
+  kind: ClusterRole
+  name: task-creator-role
+  apiGroup: rbac.authorization.k8s.io
